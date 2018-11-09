@@ -9,11 +9,10 @@ docker-compose build
 ```
 
 ## Running ##
-Then run the images with:
+Run the containers with:
 ```
 docker-compose up
 ```
-
 stop:
 ```
 docker-compose down
