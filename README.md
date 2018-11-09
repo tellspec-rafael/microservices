@@ -1,15 +1,15 @@
-#Microservices
+# Microservices #
 =======
 Microservices using ZMQ and Go.
 You need docker and docker compose to run this example.
 
-##Build
+## Build ##
 Build the images running:
 ```
 docker-compose build
 ```
 
-##Running
+## Running ##
 Then run the images with:
 ```
 docker-compose up
@@ -19,7 +19,7 @@ stop:
 ```
 docker-compose down
 ```
-##Scaling up
+## Scaling up ##
 Run any number or workers:
 ```
 docker-compose up --scale worker=4
