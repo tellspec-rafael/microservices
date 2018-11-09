@@ -2,6 +2,8 @@
 Microservices using [ZMQ](http://zeromq.org/) and Go.
 You need docker and docker compose to run this.
 
+Pull requests welcome :smiley:
+
 ## Build ##
 Build the images:
 ```
