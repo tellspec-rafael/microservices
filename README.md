@@ -13,16 +13,29 @@ Run the containers with:
 ```
 docker-compose up
 ```
+You should see something like this:
+```
+worker_1  | Received request [Hello 9]
+client_1  | Client 0 Received [Hello 9]
+client_1  | It took: 10.074335 seconds.
+```
+It shows that it took more or less 10 seconds to process all the requests for 1 client. This example client is doing 10 requests, each request takes 1 second to process on the worker for this demo.
+
+You can define the number of clients:
+```
+docker-compose up --scale client=2 
+```
+
 stop:
 ```
 docker-compose down
 ```
-## Scaling up ##
-Run any number or workers:
+## Scaling it up ##
+
+With more clients the time to process everyone increases, so we need to make it scalable, you can also define the number of threads for each worker in the docker-compose.yaml file, or run any number of workers with:
 ```
-docker-compose up --scale worker=4
+docker-compose up --scale client=2 --scale worker=2
 ```
-You can also define the number of threads in each worker in the docker-compose.yaml file.
 
 ## Architecture ##
 ### Router ###
@@ -36,7 +49,7 @@ The worker connects to a router and is always waiting for requests, its has a in
 
 ### Logger ###
 The logger container work as a log sink, it pulls the logs from the workers and write to a log file.  
-It uses: https://github.com/natefinch/lumberjack for rotative logging.  
+It uses: https://github.com/natefinch/lumberjack for log rotation.  
 Logging options:
 ```
 log.SetOutput(&lumberjack.Logger{
