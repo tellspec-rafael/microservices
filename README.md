@@ -32,7 +32,7 @@ Is based on the request-reply broker of the ZMQ guide: http://zguide.zeromq.org/
 
 ### Worker ###
 
-The worker connects to a router and is always waiting for requests, its has a internal router to distribute the work by his worker threads. If only one worker process is preferred the router can then be removed making a direct communication between the clients and that one worker.
+The worker connects to a router and is always waiting for requests, its has a internal router to distribute the work by his threads. If only one worker process is preferred the router can then be removed making a direct communication between the clients and the worker.
 
 ### Logger ###
 The logger container work as a log sink, it pulls the logs from the workers and write to a log file.  
