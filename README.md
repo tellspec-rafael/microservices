@@ -25,8 +25,8 @@ docker-compose up --scale worker=4
 You can also define the number of threads in each worker in the docker-compose.yaml file.
 
 ## Logging ##
-Logger container work as a log sink, it pulls the logs from the workers and write to a rotative log file.
-It uses: https://github.com/natefinch/lumberjack for rotative logging.
+Logger container work as a log sink, it pulls the logs from the workers and write to a rotative log file.  
+It uses: https://github.com/natefinch/lumberjack for rotative logging.  
 Logging options:
 ```
 log.SetOutput(&lumberjack.Logger{
