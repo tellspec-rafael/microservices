@@ -34,7 +34,7 @@ docker-compose down
 ```
 ## Scaling it up ##
 
-With more clients the time to process everyone increases, so we need to make it scalable, you can also define the number of threads for each worker in the docker-compose.yaml file, or run any number of workers with:
+With more clients the time to process everyone increases, so we need to make it scalable, you can define the number of threads for each worker in the docker-compose.yaml file, or run any number of workers with:
 ```
 docker-compose up --scale client=2 --scale worker=2
 ```
