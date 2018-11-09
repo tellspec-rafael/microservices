@@ -1,10 +1,9 @@
 # Microservices #
-=======
 Microservices using ZMQ and Go.
 You need docker and docker compose to run this example.
 
 ## Build ##
-Build the images running:
+Build the images:
 ```
 docker-compose build
 ```
