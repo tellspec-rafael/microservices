@@ -1,5 +1,5 @@
 # Microservice Template #
-Microservices using ZMQ and Go.
+Microservices using ZMQ(http://zguide.zeromq.org/) and Go.
 You need docker and docker compose to run this.
 
 ## Build ##
