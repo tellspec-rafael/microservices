@@ -1,4 +1,4 @@
-# Microservices #
+# Microservice Template #
 Microservices using ZMQ and Go.
 You need docker and docker compose to run this.
 
