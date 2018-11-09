@@ -9,6 +9,7 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	zmq "github.com/pebbe/zmq4"
 )
@@ -25,21 +26,23 @@ func clientFunc(wg *sync.WaitGroup, index int) {
 		// send hello
 		msg := fmt.Sprintf("Hello %d", i)
 		socket.Send(msg, 0)
-		fmt.Printf("Client %d Sending %v\n", index, msg)
+		fmt.Printf("Client %d Sending [%v]\n", index, msg)
 
 		// Wait for reply:
 		reply, _ := socket.Recv(0)
-		fmt.Printf("Client %d Received %v\n", index, string(reply))
+		fmt.Printf("Client %d Received [%v]\n", index, string(reply))
 	}
 	defer wg.Done()
 }
 
 func main() {
-	numberOfClients := 16
+	numberOfClients := 1
 	var wg sync.WaitGroup
 	wg.Add(numberOfClients)
+	start := time.Now()
 	for index := 0; index < numberOfClients; index++ {
 		go clientFunc(&wg, index)
 	}
 	wg.Wait()
+	fmt.Printf("It took: %f seconds.\n", time.Now().Sub(start).Seconds())
 }

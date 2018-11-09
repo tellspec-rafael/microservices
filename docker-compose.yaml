@@ -23,7 +23,7 @@ services:
     depends_on:
       - router
     working_dir: /worker
-    command: go run main.go --threads 4
+    command: go run main.go --threads 1
   
   logger:
     build:
