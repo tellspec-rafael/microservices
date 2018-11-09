@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+
+  # The router for this microservice, will receive requests and fair distribute task to workers
+  # This router will accept connections on port 5559, the client needs to know the address and port 
+  router:
+    build:
+      context: .
+      dockerfile: ./router/Dockerfile
+    volumes:
+      - './router:/router'
+    working_dir: /router
+    command: go run main.go
+
+  # The Worker for this microservice, will receive tasks from router, can have any number of threads
+  worker:
+    build:
+      context: .
+      dockerfile: ./worker/Dockerfile
+    volumes:
+      - './worker:/worker'
+    depends_on:
+      - router
+    working_dir: /worker
+    command: go run main.go --threads 4
+  
+  logger:
+    build:
+      context: .
+      dockerfile: ./logger/Dockerfile
+    volumes:
+      - './logger:/logger'
+    working_dir: /logger
+    command: go run main.go
+
+  # Some client for testing, will be removed, for heavy testing is creating 16 connections, can be more
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    volumes:
+      - './client:/client'
+      - './router:/router'
+    depends_on:
+      - router
+    working_dir: /client
+    command: go run main.go
