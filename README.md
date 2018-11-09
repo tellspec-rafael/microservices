@@ -37,3 +37,8 @@ log.SetOutput(&lumberjack.Logger{
 		Compress:   true, // disabled by default
 	})
 ```
+## Architecture ##
+### Router ###
+
+The router container will receive all the requests from the clients, his job is to do a fairly distribution of the workload.  
+Is based on the request-reply broker of the ZMQ guide: http://zguide.zeromq.org/page:all#Shared-Queue-DEALER-and-ROUTER-sockets
