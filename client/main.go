@@ -18,7 +18,8 @@ func clientFunc(wg *sync.WaitGroup, index int) {
 	socket, _ := zmq.NewSocket(zmq.REQ)
 	defer socket.Close()
 
-	fmt.Printf("Client %d created\n", index)
+	//fmt.Printf("Client %d created\n", index)
+	fmt.Print("Created\n")
 	socket.Connect("ipc:///router/router.ipc")
 	//socket.Connect("tcp://127.0.0.1:5559")
 
@@ -26,11 +27,13 @@ func clientFunc(wg *sync.WaitGroup, index int) {
 		// send hello
 		msg := fmt.Sprintf("Hello %d", i)
 		socket.Send(msg, 0)
-		fmt.Printf("Client %d Sending [%v]\n", index, msg)
+		//fmt.Printf("Client %d Sending [%v]\n", index, msg)
+		fmt.Printf("Sending [%v]\n", msg)
 
 		// Wait for reply:
 		reply, _ := socket.Recv(0)
-		fmt.Printf("Client %d Received [%v]\n", index, string(reply))
+		//fmt.Printf("Client %d Received [%v]\n", index, string(reply))
+		fmt.Printf("Received [%v]\n", string(reply))
 	}
 	defer wg.Done()
 }

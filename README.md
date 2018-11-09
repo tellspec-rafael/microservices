@@ -18,7 +18,7 @@ docker-compose up
 You should see something like this:
 ```
 worker_1  | Received request [Hello 9]
-client_1  | Client 0 Received [Hello 9]
+client_1  | Received [Hello 9]
 client_1  | It took: 10.074335 seconds.
 ```
 It shows that it took more or less 10 seconds to process all the requests for 1 client. This example client is doing 10 requests, each request takes 1 second to process on the worker for this demo.
