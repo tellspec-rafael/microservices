@@ -24,8 +24,16 @@ docker-compose up --scale worker=4
 ```
 You can also define the number of threads in each worker in the docker-compose.yaml file.
 
-## Logging ##
-Logger container work as a log sink, it pulls the logs from the workers and write to a rotative log file.  
+## Architecture ##
+### Router ###
+
+The router container will receive all the requests from the clients, his job is to do a fairly distribution of the workload.  
+Is based on the request-reply broker of the ZMQ guide: http://zguide.zeromq.org/page:all#Shared-Queue-DEALER-and-ROUTER-sockets
+
+### Worker ###
+
+### Logger ###
+The logger container work as a log sink, it pulls the logs from the workers and write to a rotative log file.  
 It uses: https://github.com/natefinch/lumberjack for rotative logging.  
 Logging options:
 ```
@@ -37,8 +45,3 @@ log.SetOutput(&lumberjack.Logger{
 		Compress:   true, // disabled by default
 	})
 ```
-## Architecture ##
-### Router ###
-
-The router container will receive all the requests from the clients, his job is to do a fairly distribution of the workload.  
-Is based on the request-reply broker of the ZMQ guide: http://zguide.zeromq.org/page:all#Shared-Queue-DEALER-and-ROUTER-sockets
