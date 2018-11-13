@@ -34,7 +34,7 @@ services:
     working_dir: /logger
     command: go run main.go
 
-  # Some client for testing, will be removed, for heavy testing is creating 16 connections, can be more
+  # Some client for testing, will be removed
   client:
     build:
       context: .
