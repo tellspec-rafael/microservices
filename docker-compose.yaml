@@ -3,7 +3,7 @@ version: '3'
 services:
 
   # The router for this microservice, will receive requests and fair distribute task to workers
-  # This router will accept connections on port 5559, the client needs to know the address and port 
+  # This router will accept connections on port 1, the client needs to know the address and port 
   router:
     build:
       context: .
