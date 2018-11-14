@@ -36,7 +36,8 @@ func main() {
 	backend, _ := zmq.NewSocket(zmq.DEALER)
 	defer frontend.Close()
 	defer backend.Close()
-	frontend.Connect("tcp://router:1")
+	frontend.Connect("tcp://router:5558")
+	// frontend.Connect("tcp://127.0.0.1:5558")
 	backend.Bind("ipc:///tmp/workers" + workerInternalIdentifier + ".ipc")
 
 	// Start worker router see http://api.zeromq.org/4-1:zmq-proxy#toc2

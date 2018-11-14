@@ -10,18 +10,19 @@ import (
 	"fmt"
 	"sync"
 	"time"
+	// "os"
 
 	zmq "github.com/pebbe/zmq4"
 )
 
-func clientFunc(wg *sync.WaitGroup, index int) {
+func clientFunc(wg *sync.WaitGroup, index int, router string) {
 	socket, _ := zmq.NewSocket(zmq.REQ)
 	defer socket.Close()
 
 	//fmt.Printf("Client %d created\n", index)
-	fmt.Print("Created\n")
-	socket.Connect("ipc:///router/router.ipc")
-	//socket.Connect("tcp://127.0.0.1:5559")
+	fmt.Println("Created")
+	// socket.Connect("ipc:///router/router.ipc")
+	socket.Connect("tcp://" + router + ":5559")
 
 	for i := 0; i < 10; i++ {
 		// send hello
@@ -39,12 +40,15 @@ func clientFunc(wg *sync.WaitGroup, index int) {
 }
 
 func main() {
+	// fmt.Println (os.Args)
+	// it seems that a client talking to a local router must say 'router' here, but a remote client can use an IP number or a domain name.
+	router := "router" // "127.0.0.1" // os.Args[1] // 
 	numberOfClients := 1
 	var wg sync.WaitGroup
 	wg.Add(numberOfClients)
 	start := time.Now()
 	for index := 0; index < numberOfClients; index++ {
-		go clientFunc(&wg, index)
+		go clientFunc(&wg, index, router)
 	}
 	wg.Wait()
 	fmt.Printf("It took: %f seconds.\n", time.Now().Sub(start).Seconds())

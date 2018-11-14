@@ -2,12 +2,24 @@ version: '3'
 
 services:
 
-  # The router for this microservice, will receive requests and fair distribute task to workers
-  # This router will accept connections on port 5559, the client needs to know the address and port 
+  # The parent docker image for the services. It's not a real service.
+  base:
+    build:
+      context: .
+      dockerfile: ./base/Dockerfile
+    volumes:
+      - './base:/base'
+    working_dir: /base
+
+  # The router for this microservice, will receive requests and fairly distribute task to workers.
+  # This router will accept connections on port 5559, the client needs to know the address and port.
   router:
     build:
       context: .
       dockerfile: ./router/Dockerfile
+    ports:
+      - "5559:5559/tcp"
+      - "5558:5558/tcp"
     volumes:
       - './router:/router'
     working_dir: /router
@@ -22,6 +34,8 @@ services:
       - './worker:/worker'
     depends_on:
       - router
+    expose:
+      - "5558/tcp"
     working_dir: /worker
     command: go run main.go --threads 1
   
@@ -39,6 +53,8 @@ services:
     build:
       context: .
       dockerfile: ./client/Dockerfile
+    expose:
+      - "5559/tcp"
     volumes:
       - './client:/client'
       - './router:/router'
