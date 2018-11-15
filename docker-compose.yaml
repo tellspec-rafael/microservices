@@ -10,6 +10,9 @@ services:
       dockerfile: ./router/Dockerfile
     volumes:
       - './router:/router'
+    ports:
+      - "5559:5559/tcp"
+      - "5558:5558/tcp"
     working_dir: /router
     command: go run main.go
 
@@ -45,4 +48,5 @@ services:
     depends_on:
       - router
     working_dir: /client
-    command: go run main.go
+    command: go run main.go --router router:5559
+    #command: go run main.go --router docker.for.mac.localhost:5559 you can also define a ip

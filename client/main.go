@@ -7,6 +7,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"sync"
 	"time"
@@ -14,14 +15,14 @@ import (
 	zmq "github.com/pebbe/zmq4"
 )
 
-func clientFunc(wg *sync.WaitGroup, index int) {
+func clientFunc(wg *sync.WaitGroup, index int, routerAddress string) {
 	socket, _ := zmq.NewSocket(zmq.REQ)
 	defer socket.Close()
 
 	//fmt.Printf("Client %d created\n", index)
-	fmt.Print("Created\n")
-	socket.Connect("ipc:///router/router.ipc")
-	//socket.Connect("tcp://127.0.0.1:5559")
+	fmt.Println("Created")
+	//socket.Connect("ipc:///router/router.ipc")
+	socket.Connect("tcp://" + routerAddress)
 
 	for i := 0; i < 10; i++ {
 		// send hello
@@ -39,12 +40,16 @@ func clientFunc(wg *sync.WaitGroup, index int) {
 }
 
 func main() {
+
+	routerAddress := flag.String("router", "router:5559", "Address of the router.")
+	flag.Parse()
+
 	numberOfClients := 1
 	var wg sync.WaitGroup
 	wg.Add(numberOfClients)
 	start := time.Now()
 	for index := 0; index < numberOfClients; index++ {
-		go clientFunc(&wg, index)
+		go clientFunc(&wg, index, *routerAddress)
 	}
 	wg.Wait()
 	fmt.Printf("It took: %f seconds.\n", time.Now().Sub(start).Seconds())
