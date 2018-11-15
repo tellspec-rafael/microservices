@@ -26,7 +26,7 @@ services:
     depends_on:
       - router
     working_dir: /worker
-    stop_signal: SIGINT  #Needed to not stop in the middle of the work
+    stop_signal: SIGINT  # Needed to not stop in the middle of the work
     command: go run main.go --threads 1
   
   #A python Worker for this microservice
@@ -37,7 +37,7 @@ services:
     volumes:
       - './worker_python:/worker'
     working_dir: /worker
-    stop_signal: SIGINT #Needed to not stop in the middle of the work
+    stop_signal: SIGINT # Needed to not stop in the middle of the work
     command: python -u main.py --threads 1 # "u" to print on docker
   
   logger:
