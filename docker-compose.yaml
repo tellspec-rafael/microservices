@@ -28,6 +28,16 @@ services:
     working_dir: /worker
     command: go run main.go --threads 1
   
+  # A python Worker for this microservice
+  worker_python:
+    build:
+      context: .
+      dockerfile: ./worker_python/Dockerfile
+    volumes:
+      - './worker_python:/worker'
+    working_dir: /worker
+    command: python -u main.py --threads 1 # "u" to print on docker
+  
   logger:
     build:
       context: .

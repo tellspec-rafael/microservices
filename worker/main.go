@@ -9,6 +9,31 @@ import (
 	zmq "github.com/pebbe/zmq4"
 )
 
+func worker(workerInternalIdentifier string) {
+	// Socket to talk to dispatcher
+	receiver, _ := zmq.NewSocket(zmq.REP)
+
+	// REP socket monitor, all events
+	// err := receiver.Monitor("tcp://logger:2.req", zmq.EVENT_ALL)
+	// if err != nil {
+	// 	fmt.Print("rep.Monitor:", err)
+	// }
+
+	defer receiver.Close()
+	receiver.Connect("ipc:///tmp/workers" + workerInternalIdentifier + ".ipc")
+
+	for true {
+		received, _ := receiver.Recv(0)
+		logger(fmt.Sprintf("Received request [%s]\n", received))
+
+		// Do some 'work'
+		time.Sleep(time.Second)
+
+		// Send reply back to client
+		receiver.Send(received, 0)
+	}
+}
+
 func randomString() string {
 	source := "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	target := make([]byte, 20)
@@ -53,29 +78,4 @@ func logger(log string) {
 	socket.Connect("tcp://logger:1")
 	socket.Send(log, 0)
 	socket.Close()
-}
-
-func worker(workerInternalIdentifier string) {
-	// Socket to talk to dispatcher
-	receiver, _ := zmq.NewSocket(zmq.REP)
-
-	// REP socket monitor, all events
-	// err := receiver.Monitor("tcp://logger:2.req", zmq.EVENT_ALL)
-	// if err != nil {
-	// 	fmt.Print("rep.Monitor:", err)
-	// }
-
-	defer receiver.Close()
-	receiver.Connect("ipc:///tmp/workers" + workerInternalIdentifier + ".ipc")
-
-	for true {
-		received, _ := receiver.Recv(0)
-		logger(fmt.Sprintf("Received request [%s]\n", received))
-
-		// Do some 'work'
-		time.Sleep(time.Second)
-
-		// Send reply back to client
-		receiver.Send(received, 0)
-	}
 }
