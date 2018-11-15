@@ -18,13 +18,22 @@ def worker(worker_url, context=None):
 
         string  = socket.recv()
 
-        print("Received request: [ %s ]" % (string))
+        logger("Received request: [{}]".format(string))
 
         # do some 'work'
         time.sleep(1)
 
         #send reply back to client
         socket.send(string)
+
+def logger(log, context=None):
+	print(log)
+
+	context = context or zmq.Context.instance()
+	socket = context.socket(zmq.PUSH)
+	socket.connect("tcp://logger:1")
+	socket.send(log, 0)
+	socket.close()
 
 def main(argv):
 
