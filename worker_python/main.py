@@ -16,15 +16,16 @@ def worker(worker_url, context=None):
 
     while True:
 
-        string  = socket.recv()
+		string  = socket.recv()
 
-        logger("Received request: [{}]".format(string))
+		logger("Received request: [{}]".format(string))
 
-        # do some 'work'
-        time.sleep(1)
+		# do some 'work'
+		time.sleep(1)
 
-        #send reply back to client
-        socket.send(string)
+		#send reply back to client
+		logger("Sent request: [{}]".format(string))
+		socket.send(string)
 
 def logger(log, context=None):
 	print(log)

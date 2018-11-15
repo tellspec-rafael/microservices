@@ -27,9 +27,10 @@ func worker(workerInternalIdentifier string) {
 		logger(fmt.Sprintf("Received request [%s]\n", received))
 
 		// Do some 'work'
-		time.Sleep(time.Second)
+		time.Sleep(time.Second * 1)
 
 		// Send reply back to client
+		logger(fmt.Sprintf("SENT request [%s]\n", received))
 		receiver.Send(received, 0)
 	}
 }
@@ -41,6 +42,17 @@ func randomString() string {
 		target[i] = source[rand.Intn(len(source))]
 	}
 	return string(target)
+}
+
+func logger(log string) {
+
+	fmt.Printf(log)
+
+	socket, _ := zmq.NewSocket(zmq.PUSH)
+	defer socket.Close()
+	socket.Connect("tcp://logger:1")
+	socket.Send(log, 0)
+	socket.Close()
 }
 
 func main() {
@@ -67,15 +79,4 @@ func main() {
 	// Start worker router see http://api.zeromq.org/4-1:zmq-proxy#toc2
 	err := zmq.Proxy(frontend, backend, nil)
 	logger(fmt.Sprintf("Proxy interrupted: %s", err))
-}
-
-func logger(log string) {
-
-	fmt.Printf(log)
-
-	socket, _ := zmq.NewSocket(zmq.PUSH)
-	defer socket.Close()
-	socket.Connect("tcp://logger:1")
-	socket.Send(log, 0)
-	socket.Close()
 }
